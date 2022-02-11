@@ -1,6 +1,7 @@
 import React from "react";
 
 import Card from "../../shared/components/UIElements/Card";
+import Button from "../../shared/components/FormElements/Button";
 import "./MomentItem.css";
 
 const MomentItem = props => {
@@ -16,9 +17,9 @@ const MomentItem = props => {
           <p>{props.description}</p>
         </div>
         <div className="moment-item__actions">
-          <button>VIEW</button>
-          <button>EDIT</button>
-          <button>DELETE</button>
+          <Button inverse>VIEW ON MAP</Button>
+          <Button to={`/moments/${props.id}`}>EDIT</Button>
+          <Button danger>DELETE</Button>
         </div>
       </Card>
     </li>
