@@ -19,7 +19,7 @@ const App = () => {
             </Route>
             <Redirect to="/" />
           </Switch>
-        </main>\
+        </main>
     </Router>
   );
 }
