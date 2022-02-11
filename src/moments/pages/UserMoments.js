@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import MomentList from '../components/MomentList';
 
@@ -32,8 +33,10 @@ const DUMMY_MOMENTS = [
 ];
 
 const UserMoments = props => {
+  const userId = useParams().userId;
+  const loadedMoments = DUMMY_MOMENTS.filter(moment => moment.creator === userId)
   return (
-    <MomentList items={DUMMY_MOMENTS} />
+    <MomentList items={loadedMoments} />
   )
 };
 
