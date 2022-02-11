@@ -1,0 +1,40 @@
+import React from 'react';
+
+import MomentList from '../components/MomentList';
+
+const DUMMY_MOMENTS = [
+  {
+    id: "m1",
+    title: "Tokyo Sky Tree",
+    imageUrl:
+      "https://images.unsplash.com/photo-1545387652-dd48c403e0e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9reW8lMjBza3klMjB0cmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    description:
+      "Tokyo Skytree is a broadcasting and observation tower in Sumida, Tokyo. It became the tallest structure in Japan in 2010 and reached its full height of 634 meters in March 2011, making it the tallest tower in the world.",
+    location: {
+      lat: 35.7100627,
+      lng: 35.7100627,
+    },
+    creator: "u1",
+  },
+  {
+    id: "m2",
+    title: "Tokyo Sky Tree",
+    imageUrl:
+      "https://images.unsplash.com/photo-1545387652-dd48c403e0e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9reW8lMjBza3klMjB0cmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    description:
+      "Tokyo Skytree is a broadcasting and observation tower in Sumida, Tokyo. It became the tallest structure in Japan in 2010 and reached its full height of 634 meters in March 2011, making it the tallest tower in the world.",
+    location: {
+      lat: 35.7100627,
+      lng: 35.7100627,
+    },
+    creator: "u2",
+  },
+];
+
+const UserMoments = props => {
+  return (
+    <MomentList items={DUMMY_MOMENTS} />
+  )
+};
+
+export default UserMoments;
