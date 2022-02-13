@@ -18,7 +18,7 @@ const App = () => {
             <Route path='/:userId/moments' exact>
               <UserMoments />
             </Route>
-            <Route path='/places/new' exact>
+            <Route path='/moments/new' exact>
               <NewMoment />
             </Route>
             <Redirect to="/" />
