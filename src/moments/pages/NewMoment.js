@@ -6,7 +6,13 @@ import './NewMoment.css'
 const NewMoment = () => {
   return (
     <form className='moment-form'>
-      <Input element="input" type="text" label="Title" />
+      <Input 
+        element="input" 
+        type="text" 
+        label="Title"
+        validators={[]}
+        errorText="Please enter a valid title."
+       />
     </form>
   )  
 };
