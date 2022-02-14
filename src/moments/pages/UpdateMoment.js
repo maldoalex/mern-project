@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
+import Card from '../../shared/components/UIElements/Card';
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../shared/util/Validators';
 import { useForm } from '../../shared/hooks/FormHook';
 import "./MomentForm.css";
@@ -37,20 +38,41 @@ const DUMMY_MOMENTS = [
 ];
 
 const UpdateMoment = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const momentId = useParams().momentId;
 
-  const identifiedMoment = DUMMY_MOMENTS.find(m => m.id === momentId);
-
-  const [formState, inputHandler] = useForm({
+  const [formState, inputHandler, setFormData] = useForm({
     title: {
-      value: identifiedMoment.title,
-      isValid: true
+      value: '',
+      isValid: false
     },
     description: {
-      value: identifiedMoment.description,
-      isValid: true
+      value: '',
+      isValid: false
     }
-  }, true)
+  }, false)
+
+  const identifiedMoment = DUMMY_MOMENTS.find((m) => m.id === momentId);
+
+  useEffect(() => {
+    if (identifiedMoment) {
+      setFormData(
+        {
+          title: {
+            value: identifiedMoment.title,
+            isValid: true,
+          },
+          description: {
+            value: identifiedMoment.description,
+            isValid: true,
+          },
+        },
+        true
+      );
+
+    }
+    setIsLoading(false);
+  }, [setFormData, identifiedMoment])
 
   const momentUpdateSubmitHandler = event => {
     event.preventDefault();
@@ -60,7 +82,17 @@ const UpdateMoment = () => {
   if (!identifiedMoment) {
     return (
       <div className='center'>
-        <h2>Could not find moment!</h2>
+        <Card>
+          <h2>Could not find moment!</h2>
+        </Card>
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className='center'>
+        <h2>Loading...</h2>
       </div>
     )
   }

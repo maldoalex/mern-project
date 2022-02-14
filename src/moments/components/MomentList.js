@@ -2,6 +2,7 @@ import React from 'react';
 
 import Card from '../../shared/components/UIElements/Card';
 import MomentItem from './MomentItem';
+import Button from '../../shared/components/FormElements/Button';
 import './MomentList.css';
 
 const MomentList = (props) => {
@@ -10,7 +11,7 @@ const MomentList = (props) => {
       <div className='moment-list center'>
         <Card>
           <h2>No moments found. Try creating one!</h2>
-          <button>Share Moment</button>
+          <Button to='/moments/new'>Share Moment</Button>
         </Card>
       </div>
     );
