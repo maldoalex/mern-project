@@ -6,6 +6,7 @@ import NewMoment from './moments/pages/NewMoment';
 import UserMoments from './moments/pages/UserMoments';
 import UpdateMoment from './moments/pages/UpdateMoment';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
+import UserAuthenticate from './user/pages/UserAuthenticate';
 
 const App = () => {
   return (
@@ -15,6 +16,9 @@ const App = () => {
           <Switch>
             <Route path='/' exact>
               <Users />
+            </Route>
+            <Route path='/auth' exact>
+              <UserAuthenticate />
             </Route>
             <Route path='/:userId/moments' exact>
               <UserMoments />
