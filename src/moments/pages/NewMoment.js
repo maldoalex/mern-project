@@ -57,8 +57,13 @@ const NewMoment = () => {
   // const descriptionInputHandler = useCallback((id, value, isValid) => {
   // },[]);
 
+  const momentSubmitHandler = event =>{
+  event.preventDefault();
+  
+  };
+
   return (
-    <form className='moment-form'>
+    <form className='moment-form' onSubmit={momentSubmitHandler}>
       <Input 
         id="title"
         element="input" 

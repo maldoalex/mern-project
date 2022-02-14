@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Users from './user/pages/Users';
 import NewMoment from './moments/pages/NewMoment';
 import UserMoments from './moments/pages/UserMoments';
+import UpdateMoment from './moments/pages/UpdateMoment';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 
 const App = () => {
@@ -20,6 +21,9 @@ const App = () => {
             </Route>
             <Route path='/moments/new' exact>
               <NewMoment />
+            </Route>
+            <Route path="/moments/:momentId">
+              <UpdateMoment />
             </Route>
             <Redirect to="/" />
           </Switch>
