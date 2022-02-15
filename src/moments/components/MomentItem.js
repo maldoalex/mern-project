@@ -65,6 +65,11 @@ const MomentItem = props => {
             <h3>{props.date}</h3>
             <p>{props.description}</p>
           </div>
+          <div className="moment-item__info">
+            <p>{props.haikuone}</p>
+            <p>{props.haikutwo}</p>
+            <p>{props.haikuthree}</p>
+          </div>
           <div className="moment-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
             <Button to={`/moments/${props.id}`}>EDIT</Button>

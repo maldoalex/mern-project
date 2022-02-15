@@ -27,6 +27,9 @@ const MomentList = (props) => {
           title={moment.title}
           date={moment.date}
           description={moment.description} 
+          haikuone={moment.haikuone}
+          haikutwo={moment.haikutwo}
+          haikuthree={moment.haikuthree}
           coordinates={moment.location} 
           creatorId={moment.creator} 
         />

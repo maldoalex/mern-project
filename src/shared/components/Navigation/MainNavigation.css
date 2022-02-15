@@ -14,16 +14,16 @@
   display: block;
   width: 3rem;
   height: 2.5px;
-  background: white;
+  background: #F2F0B3;
 }
 
 .main-navigation__title {
-  color: white;
+  color: #F2F0B3;
 }
 
 .main-navigation__title a {
   text-decoration: none;
-  color: white;
+  color: #F2F0B3;
 }
 
 .main-navigation__header-nav {
