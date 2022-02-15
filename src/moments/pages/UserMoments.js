@@ -9,7 +9,11 @@ const DUMMY_MOMENTS = [
     title: "Tokyo Neighborhood",
     imageUrl:
       "https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHRva3lvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    date: "2022-02-14",
     description: "Quiet and typical Tokyo neighborhood, view from hilltop.",
+    haikuone: "Quiet road downhill",
+    haikutwo: "Man Walks to the train station",
+    haikuthree: "Good start to the day",
     location: {
       lat: 35.69569453472375,
       lng: 139.72287404998391
