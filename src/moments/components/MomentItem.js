@@ -1,12 +1,18 @@
-import React, {useState, Fragment} from "react";
+import React, {useState, useContext, Fragment} from "react";
 
 import Card from "../../shared/components/UIElements/Card";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import Map from "../../shared/components/UIElements/Map";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import {AuthContext} from '../../shared/context/AuthContext';
+import {useHttpClient} from '../../shared/hooks/HttpHook';
 import "./MomentItem.css";
 
 const MomentItem = props => {
+  const {isLoading, sendRequest, error, clearError} = useHttpClient();
+  const auth = useContext(AuthContext);
   const [showMap, setShowMap] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -22,13 +28,20 @@ const MomentItem = props => {
     setShowConfirmModal(false);
   };
 
-  const confirmDeleteHandler = () => {
+  const confirmDeleteHandler = async () => {
     setShowConfirmModal(false);
-    console.log('DELETING...');
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/moments/${props.id}`,
+        'DELETE'
+      );
+      props.onDelete(props.id);
+    } catch (err) { }
   };
 
   return (
     <Fragment>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal 
         show={showMap} 
         onCancel={closeMapHandler} 
@@ -57,6 +70,7 @@ const MomentItem = props => {
       </Modal>
       <li className="moment-item">
         <Card className="moment-item__content">
+        {isLoading && <LoadingSpinner asOverlay />}
           <div className="moment-item__image">
             <img src={props.image} alt={props.title} />
           </div>
@@ -72,8 +86,15 @@ const MomentItem = props => {
           </div>
           <div className="moment-item__actions">
             <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-            <Button to={`/moments/${props.id}`}>EDIT</Button>
-            <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
+            {auth.userId === props.creatorId && (
+              <Button to={`/moments/${props.id}`}>EDIT</Button>
+            )}
+
+            {auth.userId === props.creatorId && (
+              <Button danger onClick={showDeleteWarningHandler}>
+                DELETE
+              </Button>
+            )}
           </div>
         </Card>
       </li>

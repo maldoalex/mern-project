@@ -1,45 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 
 import MomentList from '../components/MomentList';
-
-const DUMMY_MOMENTS = [
-  {
-    id: "m1",
-    title: "Tokyo Neighborhood",
-    imageUrl:
-      "https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHRva3lvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    date: "2022-02-14",
-    description: "Quiet and typical Tokyo neighborhood, view from hilltop.",
-    haikuone: "Quiet road downhill",
-    haikutwo: "Man Walks to the train station",
-    haikuthree: "Good start to the day",
-    location: {
-      lat: 35.69569453472375,
-      lng: 139.72287404998391
-    },
-    creator: "u1",
-  },
-  {
-    id: "m2",
-    title: "Tokyo Sky Tree",
-    imageUrl:
-      "https://images.unsplash.com/photo-1545387652-dd48c403e0e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9reW8lMjBza3klMjB0cmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    description:
-      "Tokyo Skytree is a broadcasting and observation tower in Sumida, Tokyo. It became the tallest structure in Japan in 2010 and reached its full height of 634 meters in March 2011, making it the tallest tower in the world.",
-    location: {
-      lat: 35.7100627,
-      lng: 35.7100627,
-    },
-    creator: "u2",
-  },
-];
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import { useHttpClient } from '../../shared/hooks/HttpHook';
 
 const UserMoments = props => {
+  const [ loadedMoments, setLoadedMoments] = useState();
+  const {isLoading, error, sendRequest, clearError} = useHttpClient();
+
   const userId = useParams().userId;
-  const loadedMoments = DUMMY_MOMENTS.filter(moment => moment.creator === userId)
+
+  useEffect(() => {
+    const fetchMoments = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/moments/user/${userId}`
+        );
+        setLoadedMoments(responseData.moments);
+      } catch (err) {}
+    };
+    fetchMoments();
+  }, [sendRequest, userId]);
+
+  const momentDeletedHandler = (deletedMomentId) => {
+    setLoadedMoments(prevMoments => 
+      prevMoments.filter(moment => moment.id !== deletedMomentId)
+    );
+  };
+
   return (
-    <MomentList items={loadedMoments} />
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className='center'>
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedMoments && <MomentList items={loadedMoments} onDeleteMoment={momentDeletedHandler} />}
+    </React.Fragment>
   )
 };
 
