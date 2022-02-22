@@ -1,45 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useEffect, useState, useContext} from 'react';
+import {useParams, useHistory} from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from '../../shared/util/Validators';
 import { useForm } from '../../shared/hooks/FormHook';
+import { useHttpClient } from '../../shared/hooks/HttpHook';
+import {AuthContext} from '../../shared/context/AuthContext';
 import "./MomentForm.css";
 
-
-const DUMMY_MOMENTS = [
-  {
-    id: "m1",
-    title: "Tokyo Neighborhood",
-    imageUrl:
-      "https://images.unsplash.com/photo-1542931287-023b922fa89b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHRva3lvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    description: "Quiet and typical Tokyo neighborhood, view from hilltop.",
-    location: {
-      lat: 35.69569453472375,
-      lng: 139.72287404998391,
-    },
-    creator: "u1",
-  },
-  {
-    id: "m2",
-    title: "Tokyo Sky Tree",
-    imageUrl:
-      "https://images.unsplash.com/photo-1545387652-dd48c403e0e8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dG9reW8lMjBza3klMjB0cmVlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    description:
-      "Tokyo Skytree is a broadcasting and observation tower in Sumida, Tokyo. It became the tallest structure in Japan in 2010 and reached its full height of 634 meters in March 2011, making it the tallest tower in the world.",
-    location: {
-      lat: 35.7100627,
-      lng: 35.7100627,
-    },
-    creator: "u2",
-  },
-];
-
 const UpdateMoment = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const auth = useContext(AuthContext);
+  const {isLoading, error, sendRequest, clearError} = useHttpClient();
+  const [loadedMoment, setLoadedMoment] = useState();
   const momentId = useParams().momentId;
+  const history = useHistory();
 
   const [formState, inputHandler, setFormData] = useForm({
     title: {
@@ -52,34 +30,58 @@ const UpdateMoment = () => {
     }
   }, false)
 
-  const identifiedMoment = DUMMY_MOMENTS.find((m) => m.id === momentId);
-
   useEffect(() => {
-    if (identifiedMoment) {
-      setFormData(
+    const fetchMoment = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/moments/${momentId}`
+        );
+        setLoadedMoment(responseData.moment);
+        setFormData(
         {
           title: {
-            value: identifiedMoment.title,
+            value: responseData.moment.title,
             isValid: true,
           },
           description: {
-            value: identifiedMoment.description,
+            value: responseData.moment.description,
             isValid: true,
           },
         },
         true
       );
+      } catch (err) {}
+    };
+    fetchMoment();
+  }, [sendRequest, momentId, setFormData]);
 
-    }
-    setIsLoading(false);
-  }, [setFormData, identifiedMoment])
 
-  const momentUpdateSubmitHandler = event => {
+  const momentUpdateSubmitHandler = async event => {
     event.preventDefault();
-    console.log(formState.inputs);
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/moments/${momentId}`,
+        'PATCH',
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+      history.push('/' + auth.userId + '/moments');
+    } catch (err) {}
   };
 
-  if (!identifiedMoment) {
+  if (isLoading) {
+    return (
+      <div className='center'>
+        <LoadingSpinner />
+      </div>
+    )
+  }
+  if (!loadedMoment && !error) {
     return (
       <div className='center'>
         <Card>
@@ -89,41 +91,38 @@ const UpdateMoment = () => {
     )
   }
 
-  if (isLoading) {
-    return (
-      <div className='center'>
-        <h2>Loading...</h2>
-      </div>
-    )
-  }
-
   return (
-    <form className="moment-form" onSubmit={momentUpdateSubmitHandler}>
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        errorText="Please enter a valid title."
-        onInput={inputHandler}
-        initialValue={formState.inputs.title.value}
-        initialValid={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        errorText="Please enter a valid description (at least 5 characters)."
-        onInput={inputHandler}
-        initialValue={formState.inputs.description.value}
-        initialValid={formState.inputs.description.isValid}
-      />
-      <Button type="submit" disabled={!formState.isValid}>
-        UPDATE MOMENT
-      </Button>
-    </form>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && loadedMoment && (
+        <form className="moment-form" onSubmit={momentUpdateSubmitHandler}>
+          <Input
+            id="title"
+            element="input"
+            type="text"
+            label="Title"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter a valid title."
+            onInput={inputHandler}
+            initialValue={loadedMoment.title}
+            initialValid={true}
+          />
+          <Input
+            id="description"
+            element="textarea"
+            label="Description"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please enter a valid description (at least 5 characters)."
+            onInput={inputHandler}
+            initialValue={loadedMoment.description}
+            initialValid={true}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
+            UPDATE MOMENT
+          </Button>
+        </form>
+      )}
+    </React.Fragment>
   );
 };
 

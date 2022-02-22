@@ -23,7 +23,7 @@ const MomentList = (props) => {
         <MomentItem 
           key={moment.id} 
           id={moment.id} 
-          image={moment.imageUrl} 
+          image={moment.image} 
           title={moment.title}
           date={moment.date}
           description={moment.description} 
@@ -32,6 +32,7 @@ const MomentList = (props) => {
           haikuthree={moment.haikuthree}
           coordinates={moment.location} 
           creatorId={moment.creator} 
+          onDelete={props.onDeleteMoment}
         />
       ))}
     </ul>
