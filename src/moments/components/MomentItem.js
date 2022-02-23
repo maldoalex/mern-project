@@ -45,7 +45,7 @@ const MomentItem = props => {
       <Modal 
         show={showMap} 
         onCancel={closeMapHandler} 
-        header={props.title}
+        header={props.address}
         contentClass="moment-item__modal-content"
         footerClass="moment-item__modal-actions"
         footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
@@ -77,6 +77,7 @@ const MomentItem = props => {
           <div className="moment-item__info">
             <h2>{props.title}</h2>
             <h3>{props.date}</h3>
+            <h3>{props.address}</h3>
             <p>{props.description}</p>
           </div>
           <div className="moment-item__info">

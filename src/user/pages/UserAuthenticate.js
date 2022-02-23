@@ -71,9 +71,7 @@ const UserAuthenticate = () => {
           }
         );
         auth.login(responseData.user.id);
-      } catch (err) {
-
-      }
+      } catch (err) { }
     } else {
       try {
         const responseData = await sendRequest(
@@ -89,8 +87,7 @@ const UserAuthenticate = () => {
           },
         );
         auth.login(responseData.user.id);
-      } catch (err) {
-      }
+      } catch (err) { }
     }
   };
 

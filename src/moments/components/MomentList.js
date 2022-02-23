@@ -27,6 +27,7 @@ const MomentList = (props) => {
           title={moment.title}
           date={moment.date}
           description={moment.description} 
+          address={moment.address}
           haikuone={moment.haikuone}
           haikutwo={moment.haikutwo}
           haikuthree={moment.haikuthree}

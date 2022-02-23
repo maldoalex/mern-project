@@ -46,8 +46,7 @@ const NewMoment = () => {
         {'Content-Type': 'application/json'}
       );
       history.push('/');
-    } catch (err ) {
-    }
+    } catch (err ) { }
   };
 
   return (
@@ -74,7 +73,7 @@ const NewMoment = () => {
         />
         <Input 
           id="address"
-          element="textarea"
+          element="input"
           label="Address"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid address."
