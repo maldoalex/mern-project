@@ -76,9 +76,9 @@ const MomentItem = props => {
           </div>
           <div className="moment-item__info">
             <h2>{props.title}</h2>
-            <h3>{props.date}</h3>
-            <h3>{props.address}</h3>
             <p>{props.description}</p>
+            <h5>{props.address}</h5>
+            <h5>{props.date}</h5>
           </div>
           <div className="moment-item__info">
             <p>{props.haikuone}</p>

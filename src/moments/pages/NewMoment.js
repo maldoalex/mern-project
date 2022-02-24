@@ -27,6 +27,22 @@ const NewMoment = () => {
       value: '',
       isValid: false
     },
+    date: {
+      value: '',
+      isValid: false
+    },
+    haikuone: {
+      value: '',
+      isValid: false
+    },
+    haikutwo: {
+      value: '',
+      isValid: false
+    },
+    haikuthree: {
+      value: '',
+      isValid: false
+    },
   }, false);
 
   const history = useHistory();
@@ -41,6 +57,10 @@ const NewMoment = () => {
           title: formState.inputs.title.value,
           description: formState.inputs.description.value,
           address: formState.inputs.address.value,
+          date: formState.inputs.date.value,
+          haikuone: formState.inputs.haikuone.value,
+          haikutwo: formState.inputs.haikutwo.value,
+          haikuthree: formState.inputs.haikuthree.value,
           creator: auth.userId
         }),
         {'Content-Type': 'application/json'}
@@ -77,6 +97,42 @@ const NewMoment = () => {
           label="Address"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid address."
+          onInput={inputHandler}
+        />
+        <Input 
+          id="date"
+          element="input" 
+          type="text" 
+          label="Date"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid date."
+          onInput={inputHandler}
+        />
+        <Input 
+          id="haikuone"
+          element="input" 
+          type="text" 
+          label="Haiku-Line 1(5 syllables)"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid text for line 1."
+          onInput={inputHandler}
+        />
+        <Input 
+          id="haikutwo"
+          element="input" 
+          type="text" 
+          label="Haiku-Line 2(7 syllables)"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid text for line 2."
+          onInput={inputHandler}
+        />
+        <Input 
+          id="haikuthree"
+          element="input" 
+          type="text" 
+          label="Haiku-Line 3(5 syllables)"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a valid text for line 3."
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>ADD MOMENT</Button>
