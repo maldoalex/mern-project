@@ -64,11 +64,11 @@ const NewMoment = () => {
       formData.append('haikuone', formState.inputs.haikuone.value);
       formData.append('haikutwo', formState.inputs.haikutwo.value);
       formData.append('haikuthree', formState.inputs.haikuthree.value);
-      formData.append('creator', auth.userId);
       await sendRequest(
         'http://localhost:5000/api/moments',
         'POST',
-        formData
+        formData,
+        {Authorization: 'Bearer ' + auth.token}
       );
       history.push('/');
     } catch (err ) { }
