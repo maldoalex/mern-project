@@ -5,6 +5,7 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../shared/util/Validators';
 import { useForm } from '../../shared/hooks/FormHook';
 import { useHttpClient } from '../../shared/hooks/HttpHook';
@@ -24,6 +25,10 @@ const NewMoment = () => {
       isValid: false
     },
     address: {
+      value: '',
+      isValid: false
+    },
+    image: {
       value: '',
       isValid: false
     },
@@ -50,20 +55,20 @@ const NewMoment = () => {
   const momentSubmitHandler = async event =>{
     event.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append('title', formState.inputs.title.value);
+      formData.append('description', formState.inputs.description.value);
+      formData.append('address', formState.inputs.address.value);
+      formData.append('image', formState.inputs.image.value);
+      formData.append('date', formState.inputs.date.value);
+      formData.append('haikuone', formState.inputs.haikuone.value);
+      formData.append('haikutwo', formState.inputs.haikutwo.value);
+      formData.append('haikuthree', formState.inputs.haikuthree.value);
+      formData.append('creator', auth.userId);
       await sendRequest(
         'http://localhost:5000/api/moments',
         'POST',
-        JSON.stringify({
-          title: formState.inputs.title.value,
-          description: formState.inputs.description.value,
-          address: formState.inputs.address.value,
-          date: formState.inputs.date.value,
-          haikuone: formState.inputs.haikuone.value,
-          haikutwo: formState.inputs.haikutwo.value,
-          haikuthree: formState.inputs.haikuthree.value,
-          creator: auth.userId
-        }),
-        {'Content-Type': 'application/json'}
+        formData
       );
       history.push('/');
     } catch (err ) { }
@@ -134,6 +139,11 @@ const NewMoment = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid text for line 3."
           onInput={inputHandler}
+        />
+        <ImageUpload 
+          id="image" 
+          onInput={inputHandler} 
+          errorText="Please provide an image." 
         />
         <Button type="submit" disabled={!formState.isValid}>ADD MOMENT</Button>
       </form>
