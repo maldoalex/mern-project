@@ -65,7 +65,7 @@ const NewMoment = () => {
       formData.append('haikutwo', formState.inputs.haikutwo.value);
       formData.append('haikuthree', formState.inputs.haikuthree.value);
       await sendRequest(
-        'http://localhost:5000/api/moments',
+        process.env.REACT_APP_BACKEND_URL + '/moments',
         'POST',
         formData,
         {Authorization: 'Bearer ' + auth.token}

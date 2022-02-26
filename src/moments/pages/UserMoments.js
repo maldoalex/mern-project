@@ -16,7 +16,7 @@ const UserMoments = props => {
     const fetchMoments = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/moments/user/${userId}`
+          `${process.env.REACT_APP_BACKEND_URL}/moments/user/${userId}`
         );
         setLoadedMoments(responseData.moments);
       } catch (err) {}
