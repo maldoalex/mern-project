@@ -11,12 +11,16 @@ const UserItem = props => {
       <Card className="user-item__content">
         <Link to={`/${props.id}/moments`}>
           <div className="user-item__image">
-            <Avatar image={`${process.env.REACT_APP_ASSET_URL}/${props.image}`} alt={props.name} />
+            <Avatar
+              image={`http://localhost:5000/${props.image}`}
+              alt={props.name}
+            />
           </div>
           <div className="user-item__info">
             <h2>{props.name}</h2>
             <h3>
-              {props.momentCount} {props.momentCount === 1 ? "Moment" : "Moments"}{" "}
+              {props.momentCount}{" "}
+              {props.momentCount === 1 ? "Moment" : "Moments"}{" "}
             </h3>
           </div>
         </Link>

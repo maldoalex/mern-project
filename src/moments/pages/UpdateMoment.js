@@ -34,7 +34,7 @@ const UpdateMoment = () => {
     const fetchMoment = async () => {
       try {
         const responseData = await sendRequest(
-          `${process.env.REACT_APP_BACKEND_URL}/moments/${momentId}`
+          `http://localhost:5000/api/moments/${momentId}`
         );
         setLoadedMoment(responseData.moment);
         setFormData(
@@ -60,15 +60,15 @@ const UpdateMoment = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `${process.env.REACT_APP_BACKEND_URL}/moments/${momentId}`,
-        'PATCH',
+        `http://localhost:5000/api/moments/${momentId}`,
+        "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,
-          description: formState.inputs.description.value
+          description: formState.inputs.description.value,
         }),
         {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
       history.push('/' + auth.userId + '/moments');
