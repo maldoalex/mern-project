@@ -34,7 +34,8 @@ const UpdateMoment = () => {
     const fetchMoment = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/moments/${momentId}`
+          // `http://localhost:5000/api/moments/${momentId}`
+          `${process.env.REACT_APP_BACKEND_URL}/moments/${momentId}`
         );
         setLoadedMoment(responseData.moment);
         setFormData(
@@ -60,7 +61,8 @@ const UpdateMoment = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:5000/api/moments/${momentId}`,
+        // `http://localhost:5000/api/moments/${momentId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/moments/${momentId}`,
         "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,

@@ -32,11 +32,12 @@ const MomentItem = props => {
     setShowConfirmModal(false);
     try {
       await sendRequest(
-        `http://localhost:5000/api/moments/${props.id}`,
-        'DELETE',
+        // `http://localhost:5000/api/moments/${props.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/moments/${props.id}`,
+        "DELETE",
         null,
         {
-          Authorization: 'Bearer ' + auth.token
+          Authorization: "Bearer " + auth.token,
         }
       );
       props.onDelete(props.id);
@@ -84,7 +85,8 @@ const MomentItem = props => {
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="moment-item__image">
             <img
-              src={`http://localhost:5000/${props.image}`}
+              // src={`http://localhost:5000/${props.image}`}
+              src={`${process.env.REACT_APP_ASSET_URL}/${props.image}`}
               alt={props.title}
             />
           </div>
